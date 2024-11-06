@@ -3,7 +3,7 @@ using TomFilesDesktop.Dto;
 
 namespace TomFilesDesktop.Interfaces;
 
-public interface IFileService
+public interface IFileRepository
 {
     Task<DataTable> GetAllFiles();
     Task<bool> Create(FilesCreateUpdateDto filesCreateUpdateDto);

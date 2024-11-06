@@ -195,6 +195,7 @@
             btnSave.TabIndex = 2;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
             // btnClear
             // 
@@ -216,6 +217,7 @@
             btnDelete.TabIndex = 2;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // gridFiles
             // 
@@ -233,6 +235,7 @@
             gridFiles.ReadOnly = true;
             gridFiles.Size = new Size(883, 349);
             gridFiles.TabIndex = 2;
+            gridFiles.CellDoubleClick += gridFiles_CellDoubleClick;
             // 
             // tabFolders
             // 

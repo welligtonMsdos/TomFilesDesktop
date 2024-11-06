@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Forms.Design;
 using TomFilesDesktop.Interfaces;
+using TomFilesDesktop.Repositories;
 using TomFilesDesktop.Service;
 
 namespace TomFilesDesktop
@@ -24,7 +25,8 @@ namespace TomFilesDesktop
 
         private static void ConfigureServices(IServiceCollection services) 
         { 
-            services.AddSingleton<IFileService, FileService>(); 
+            services.AddSingleton<IFileService, FileService>();
+            services.AddSingleton<IFileRepository, FileRepository>();
         }
     }
 }
