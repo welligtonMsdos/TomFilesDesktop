@@ -20,13 +20,16 @@ namespace TomFilesDesktop
 
             ApplicationConfiguration.Initialize();
             Application.SetCompatibleTextRenderingDefault(false);           
-            Application.Run(new FrmPrincipal(serviceProvider.GetService<IFileService>()));
+            Application.Run(new FrmPrincipal(serviceProvider.GetService<IFileService>(), 
+                                             serviceProvider.GetService<IFolderService>()));
         }
 
         private static void ConfigureServices(IServiceCollection services) 
         { 
             services.AddSingleton<IFileService, FileService>();
             services.AddSingleton<IFileRepository, FileRepository>();
+            services.AddSingleton<IFolderService, FolderService>();
+            services.AddSingleton<IFolderRepository, FolderRepository>();
         }
     }
 }

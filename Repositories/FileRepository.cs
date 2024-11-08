@@ -48,7 +48,7 @@ public class FileRepository : IFileRepository
 
                 var jsonResponse = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
 
-                ApiResponse apiResponse = JsonConvert.DeserializeObject<ApiResponse>(jsonResponse);
+                ApiFilesResponse apiResponse = JsonConvert.DeserializeObject<ApiFilesResponse>(jsonResponse);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {

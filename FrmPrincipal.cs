@@ -1,110 +1,46 @@
-using TomFilesDesktop.Dto;
+using System.Windows.Forms;
 using TomFilesDesktop.Interfaces;
+using TomFilesDesktop.UserControls;
 
 
 namespace TomFilesDesktop
 {
     public partial class FrmPrincipal : Form
     {
+        private readonly IFolderService _folderService;
         private readonly IFileService _fileService;
-        private int fileId = 0;
 
-        public FrmPrincipal(IFileService fileService)
+        public FrmPrincipal(IFileService fileService, IFolderService folderService)
         {
             InitializeComponent();
 
             _fileService = fileService;
-        }       
+            _folderService = folderService;
+        }
+
+        private void TcPrincipal_MouseClick(object sender, MouseEventArgs e)
+        {
+            TabControl? tabControl = sender as TabControl;
+            if (tabControl != null)
+            {
+                if (tabControl.SelectedIndex == 0)
+                {
+                    TabFiles.Controls.Clear();
+                    var ucFile = new UcFile(_fileService);
+                    TabFiles.Controls.Add(ucFile);
+                }
+                else if (tabControl.SelectedIndex == 1)
+                {
+                    TabFolders.Controls.Clear();
+                    var ucFolder = new UcFolder(_fileService, _folderService);
+                    TabFolders.Controls.Add(ucFolder);
+                }
+            }
+        }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {
-            GetAllAsync();
-        }
-
-        private async Task SaveAsync()
-        {
-            var filesCreateUpdateDto = new FilesCreateUpdateDto(fileId == 0 ? 0 : fileId, 
-                                                                txtName.Text.Trim(), 
-                                                                txtPath.Text.Trim());
-
-            var result = false;
-
-            if(fileId == 0) result = await _fileService.Create(filesCreateUpdateDto);
-            else result = await _fileService.Update(filesCreateUpdateDto);            
-
-            if (result)
-            {
-                MessageBox.Show("Successfully saved!", "File", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                ClearFields();
-
-                GetAllAsync();
-            }
-        }
-
-        private async Task GetAllAsync()
-        {
-            var dt = await _fileService.GetAllFiles();
-
-            gridFiles.DataSource = dt;
-            gridFiles.Columns[0].Visible = false;
-        }
-
-        private async Task DeleteAsync()
-        {
-            if (await _fileService.Delete(fileId))
-            {
-                MessageBox.Show("Successfully deleted!", "File", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                ClearFields();
-
-                GetAllAsync();
-            }
-        }
-
-        private void btnPathFile_Click(object sender, EventArgs e)
-        {
-            using (FolderBrowserDialog fdFile = new FolderBrowserDialog())
-            {
-                if (fdFile.ShowDialog() == DialogResult.OK)
-                    txtPath.Text = fdFile.SelectedPath;
-            }
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            SaveAsync();
-        }
-
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            ClearFields();
-
-            GetAllAsync();
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Do you really want to delete?", "File",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.No) return;
-
-            DeleteAsync();
-        }
-
-        private void gridFiles_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            fileId = int.Parse(gridFiles.Rows[e.RowIndex].Cells[0].Value.ToString());
-            txtName.Text = gridFiles.Rows[e.RowIndex].Cells[1].Value.ToString();
-            txtPath.Text = gridFiles.Rows[e.RowIndex].Cells[2].Value.ToString();
-        }       
-
-        private void ClearFields()
-        {
-            fileId = 0;
-            txtName.Clear();
-            txtPath.Clear();
-            txtName.Focus();
+            
         }
     }
 }
