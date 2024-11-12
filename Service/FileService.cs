@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using TomFilesDesktop.Dto;
 using TomFilesDesktop.Interfaces;
+using TomFilesDesktop.Utils;
 using TomFilesDesktop.ValidationFluent;
 
 namespace TomFilesDesktop.Service;
@@ -22,7 +23,7 @@ public class FileService : IFileService
 
         if (!validResult.IsValid)
         {
-            MessageBox.Show(erros[0], "File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.MsgError(erros[0]);
 
             return false;
         }
@@ -43,7 +44,7 @@ public class FileService : IFileService
 
         if (!validResult.IsValid)
         {
-            MessageBox.Show(erros[0], "File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.MsgError(erros[0]);
 
             return false;
         }

@@ -1,5 +1,7 @@
 ﻿using TomFilesDesktop.Dto;
+using TomFilesDesktop.Enum;
 using TomFilesDesktop.Interfaces;
+using TomFilesDesktop.Utils;
 
 namespace TomFilesDesktop.UserControls
 {
@@ -53,34 +55,24 @@ namespace TomFilesDesktop.UserControls
 
             if (result)
             {
-                MessageBox.Show("Successfully saved!", "File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Util.MsgInformation(EMsg.SAVED);
 
-                ClearFieldsFiles();
+                Util.ClearFields(this,ref fileId);
 
                 await GetAllFilesAsync();
             }
         }
 
-        private void ClearFieldsFiles()
-        {
-            fileId = 0;
-            TxtName.Clear();
-            TxtPath.Clear();
-            TxtName.Focus();
-        }
-
         private async void BtnClear_Click(object sender, EventArgs e)
         {
-            ClearFieldsFiles();
+            Util.ClearFields(this, ref fileId);
 
             await GetAllFilesAsync();
         }
 
         private async void BtnDelete_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you really want to delete?", "File",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) == DialogResult.No) return;
+            if (!Util.MsgQuestion(EMsg.QUESTION_DELETE)) return;
 
             await DeleteAsync();
         }
@@ -89,9 +81,9 @@ namespace TomFilesDesktop.UserControls
         {
             if (await _fileService.Delete(fileId))
             {
-                MessageBox.Show("Successfully deleted!", "File", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Util.MsgInformation(EMsg.DELETED);
 
-                ClearFieldsFiles();
+                Util.ClearFields(this, ref fileId);
 
                 await GetAllFilesAsync();
             }

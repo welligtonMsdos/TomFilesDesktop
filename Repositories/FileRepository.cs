@@ -3,6 +3,7 @@ using System.Data;
 using System.Text;
 using TomFilesDesktop.Dto;
 using TomFilesDesktop.Interfaces;
+using TomFilesDesktop.Utils;
 
 namespace TomFilesDesktop.Repositories;
 
@@ -31,7 +32,7 @@ public class FileRepository : IFileRepository
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message, "File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.MsgError(ex.Message);
             return false;
         }
     }
@@ -66,7 +67,7 @@ public class FileRepository : IFileRepository
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message, "File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.MsgError(ex.Message);
         }
 
         return dt;
@@ -93,7 +94,7 @@ public class FileRepository : IFileRepository
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message, "File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.MsgError(ex.Message);
             return false;
         }
     }
@@ -118,7 +119,8 @@ public class FileRepository : IFileRepository
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message, "File", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.MsgError(ex.Message);
+
             return false;
         }
     }    

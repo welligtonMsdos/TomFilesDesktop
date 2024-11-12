@@ -2,6 +2,7 @@
 using System.Data;
 using TomFilesDesktop.Dto;
 using TomFilesDesktop.Interfaces;
+using TomFilesDesktop.Utils;
 
 namespace TomFilesDesktop.Repositories;
 
@@ -40,9 +41,35 @@ public class FolderRepository : IFolderRepository
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message, "Folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Util.MsgError(ex.Message);
         }
 
         return dt;
+    }
+
+    public async Task<bool> Delete(int folderId)
+    {
+        try
+        {
+            using (var httClient = new HttpClient())
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    var response = await httpClient.DeleteAsync(pathApi + "/" + folderId);
+
+                    var jsonResponse = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK) return false;
+                }
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {            
+            Util.MsgError(ex.Message);
+
+            return false;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using TomFilesDesktop.Interfaces;
+﻿using TomFilesDesktop.Enum;
+using TomFilesDesktop.Interfaces;
+using TomFilesDesktop.Utils;
 
 namespace TomFilesDesktop.UserControls
 {
@@ -15,9 +17,9 @@ namespace TomFilesDesktop.UserControls
             _folderService = folderService;
         }
 
-        private void UcFolder_Load(object sender, EventArgs e)
+        private async void UcFolder_Load(object sender, EventArgs e)
         {
-            SetComboFilesAsync();
+            await SetComboFilesAsync();
         }
 
         private async Task SetComboFilesAsync()
@@ -31,7 +33,7 @@ namespace TomFilesDesktop.UserControls
 
         private async Task GetFoldersByFileIdAsync()
         {
-            if (int.TryParse(CbxFiles.SelectedValue.ToString(), out int result))
+            if (int.TryParse(CbxFiles.SelectedValue?.ToString(), result: out int result))
             {
                 var dt = await _folderService.GetFoldersByFileId(result);
 
@@ -46,9 +48,35 @@ namespace TomFilesDesktop.UserControls
             TxtNameFolder.Text = GridFolder.Rows[e.RowIndex].Cells[3].Value.ToString();
         }
 
-        private void CbxFiles_SelectedIndexChanged(object sender, EventArgs e)
+        private async void CbxFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GetFoldersByFileIdAsync();
+            await GetFoldersByFileIdAsync();
+        }
+
+        private async void BtnClearFolder_Click(object sender, EventArgs e)
+        {
+            Util.ClearFields(this, ref folderId);
+
+            await GetFoldersByFileIdAsync();
+        }
+
+        private async void BtnDeleteFolder_Click(object sender, EventArgs e)
+        {
+            if (!Util.MsgQuestion(EMsg.QUESTION_DELETE)) return;
+
+            await DeleteAsync();
+        }
+
+        private async Task DeleteAsync()
+        {
+            if (await _folderService.Delete(folderId))
+            {
+                Util.MsgInformation(EMsg.DELETED);
+
+                Util.ClearFields(this, ref folderId);
+
+                await GetFoldersByFileIdAsync();
+            }
         }
     }
 }

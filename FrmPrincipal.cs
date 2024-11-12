@@ -1,4 +1,3 @@
-using System.Windows.Forms;
 using TomFilesDesktop.Interfaces;
 using TomFilesDesktop.UserControls;
 
@@ -21,6 +20,7 @@ namespace TomFilesDesktop
         private void TcPrincipal_MouseClick(object sender, MouseEventArgs e)
         {
             TabControl? tabControl = sender as TabControl;
+
             if (tabControl != null)
             {
                 if (tabControl.SelectedIndex == 0)
@@ -36,6 +36,7 @@ namespace TomFilesDesktop
                     TabFolders.Controls.Add(ucFolder);
                 }
             }
+
         }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)

@@ -128,6 +128,7 @@
             BtnClearFolder.TabIndex = 1;
             BtnClearFolder.Text = "Clear";
             BtnClearFolder.UseVisualStyleBackColor = true;
+            BtnClearFolder.Click += BtnClearFolder_Click;
             // 
             // BtnDeleteFolder
             // 
@@ -138,6 +139,7 @@
             BtnDeleteFolder.TabIndex = 2;
             BtnDeleteFolder.Text = "Delete";
             BtnDeleteFolder.UseVisualStyleBackColor = true;
+            BtnDeleteFolder.Click += BtnDeleteFolder_Click;
             // 
             // BtnSave
             // 

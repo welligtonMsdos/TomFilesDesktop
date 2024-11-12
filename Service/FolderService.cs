@@ -11,8 +11,14 @@ public class FolderService : IFolderService
     {
         _repository = repository;
     }
+
     public async Task<DataTable> GetFoldersByFileId(int fileId)
     {
         return await _repository.GetFoldersByFileId(fileId);
+    }
+
+    public async Task<bool> Delete(int folderId)
+    {
+        return await _repository.Delete(folderId);
     }
 }
